@@ -139,4 +139,232 @@ RedClouds provides comprehensive security auditing and resource discovery capabi
 - Splunk integration
 - ELK Stack support
 - QRadar compatibility
-- Azure Sentinel integration 
+- Azure Sentinel integration
+
+# Cloud Provider Integration
+
+RedClouds provides comprehensive integration with major cloud service providers to enable security assessments across multi-cloud environments.
+
+## Supported Cloud Providers
+
+### AWS Integration
+
+The `AWSProvider` class enables integration with AWS services:
+
+- **Authentication**
+  - IAM roles and users
+  - AWS STS support
+  - Cross-account access
+  - MFA integration
+
+- **Service Coverage**
+  - EC2 and VPC
+  - S3 and storage services
+  - IAM and security services
+  - Lambda and serverless
+  - RDS and databases
+  - Container services
+
+### Azure Integration
+
+The `AzureProvider` class enables integration with Azure services:
+
+- **Authentication**
+  - Service principals
+  - Managed identities
+  - Azure AD integration
+  - Role-based access
+
+- **Service Coverage**
+  - Virtual machines
+  - Storage accounts
+  - Identity and access
+  - Functions and apps
+  - SQL databases
+  - AKS and containers
+
+### GCP Integration
+
+The `GCPProvider` class enables integration with Google Cloud services:
+
+- **Authentication**
+  - Service accounts
+  - Workload identity
+  - Cloud Identity
+  - OAuth 2.0
+
+- **Service Coverage**
+  - Compute Engine
+  - Cloud Storage
+  - IAM and security
+  - Cloud Functions
+  - Cloud SQL
+  - GKE and containers
+
+## Usage
+
+```python
+from redclouds.cloud_providers import AWSProvider, AzureProvider, GCPProvider
+
+# Initialize providers
+aws = AWSProvider(
+    region="us-west-2",
+    profile="security-audit"
+)
+
+azure = AzureProvider(
+    subscription_id="your-subscription-id",
+    tenant_id="your-tenant-id"
+)
+
+gcp = GCPProvider(
+    project_id="your-project-id",
+    credentials_file="path/to/credentials.json"
+)
+
+# Example multi-cloud assessment
+providers = [aws, azure, gcp]
+for provider in providers:
+    # Connect to provider
+    provider.connect()
+    
+    # Run security checks
+    findings = provider.run_security_checks()
+    
+    # Generate report
+    provider.generate_report(findings)
+```
+
+## Authentication Configuration
+
+### AWS Configuration
+
+```yaml
+aws:
+  authentication:
+    type: "role"  # or "user"
+    role_arn: "arn:aws:iam::123456789012:role/SecurityAudit"
+    external_id: "your-external-id"
+    mfa_enabled: true
+  regions:
+    - "us-east-1"
+    - "us-west-2"
+  services:
+    - "ec2"
+    - "s3"
+    - "iam"
+```
+
+### Azure Configuration
+
+```yaml
+azure:
+  authentication:
+    type: "service_principal"
+    tenant_id: "your-tenant-id"
+    client_id: "your-client-id"
+    client_secret: "your-client-secret"
+  subscriptions:
+    - "subscription-id-1"
+    - "subscription-id-2"
+  services:
+    - "compute"
+    - "storage"
+    - "keyvault"
+```
+
+### GCP Configuration
+
+```yaml
+gcp:
+  authentication:
+    type: "service_account"
+    credentials_file: "path/to/credentials.json"
+  projects:
+    - "project-id-1"
+    - "project-id-2"
+  services:
+    - "compute"
+    - "storage"
+    - "iam"
+```
+
+## Best Practices
+
+1. **Authentication**
+   - Use least privilege access
+   - Enable MFA where possible
+   - Rotate credentials regularly
+   - Use managed identities
+
+2. **Service Access**
+   - Limit service scope
+   - Enable audit logging
+   - Monitor API usage
+   - Regular access review
+
+3. **Multi-Cloud**
+   - Consistent naming
+   - Standardized tagging
+   - Unified monitoring
+   - Central management
+
+## Security Features
+
+1. **Access Management**
+   - Role-based access
+   - Policy enforcement
+   - Access reviews
+   - Audit logging
+
+2. **Resource Protection**
+   - Encryption settings
+   - Network security
+   - Identity protection
+   - Data security
+
+3. **Compliance**
+   - Policy compliance
+   - Regulatory requirements
+   - Industry standards
+   - Best practices
+
+## Monitoring and Alerts
+
+1. **Resource Monitoring**
+   - Usage metrics
+   - Performance data
+   - Security events
+   - Cost tracking
+
+2. **Security Monitoring**
+   - Access patterns
+   - Policy violations
+   - Configuration changes
+   - Threat detection
+
+3. **Compliance Monitoring**
+   - Policy adherence
+   - Regulatory status
+   - Audit findings
+   - Risk assessment
+
+## Integration Guidelines
+
+1. **Initial Setup**
+   - Provider registration
+   - Authentication setup
+   - Permission configuration
+   - Service enablement
+
+2. **Ongoing Management**
+   - Credential rotation
+   - Access reviews
+   - Policy updates
+   - Service monitoring
+
+3. **Troubleshooting**
+   - Connection issues
+   - Permission errors
+   - Service limits
+   - API quotas 
