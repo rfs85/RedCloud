@@ -33,28 +33,202 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install mkdocs mkdocs-material
+          pip install mkdocs mkdocs-material mkdocs-minify-plugin mkdocs-git-revision-date-localized-plugin pillow cairosvg
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Create mkdocs.yml
         run: |
-          echo "site_name: RedClouds Documentation" > mkdocs.yml
-          echo "theme:" >> mkdocs.yml
-          echo "  name: material" >> mkdocs.yml
-          echo "  palette:" >> mkdocs.yml
-          echo "    primary: red" >> mkdocs.yml
-          echo "    accent: blue" >> mkdocs.yml
-          echo "nav:" >> mkdocs.yml
-          echo "  - Home: index.md" >> mkdocs.yml
-          echo "  - Contributing: CONTRIBUTING.md" >> mkdocs.yml
-          echo "  - Code of Conduct: CODE_OF_CONDUCT.md" >> mkdocs.yml
-          echo "  - Changelog: ../CHANGELOG.md" >> mkdocs.yml
+          cat > mkdocs.yml << 'EOF'
+          site_name: RedClouds Documentation
+          site_description: Multi-Cloud Security Auditing Tool for AWS, Azure, and GCP - Comprehensive cloud security assessment and resource discovery
+          site_author: RedClouds Team
+          site_url: https://rfs85.github.io/redclouds
 
-      - name: Create index.md
+          theme:
+            name: material
+            palette:
+              - media: "(prefers-color-scheme: light)"
+                scheme: default
+                primary: red
+                accent: blue
+                toggle:
+                  icon: material/brightness-7
+                  name: Switch to dark mode
+              - media: "(prefers-color-scheme: dark)"
+                scheme: slate
+                primary: red
+                accent: blue
+                toggle:
+                  icon: material/brightness-4
+                  name: Switch to light mode
+            features:
+              - navigation.instant
+              - navigation.tracking
+              - navigation.sections
+              - navigation.expand
+              - navigation.indexes
+              - navigation.top
+              - search.suggest
+              - search.highlight
+              - search.share
+              - toc.follow
+              - content.code.copy
+
+          plugins:
+            - search:
+                separator: '[\s\-\.]+'
+                lang: en
+            - minify:
+                minify_html: true
+            - git-revision-date-localized:
+                type: date
+
+          markdown_extensions:
+            - meta
+            - def_list
+            - attr_list
+            - md_in_html
+            - tables
+            - footnotes
+            - admonition
+            - pymdownx.details
+            - pymdownx.superfences
+            - pymdownx.highlight:
+                anchor_linenums: true
+            - pymdownx.inlinehilite
+            - pymdownx.snippets
+            - pymdownx.tabbed:
+                alternate_style: true
+            - toc:
+                permalink: true
+
+          extra:
+            social:
+              - icon: fontawesome/brands/github
+                link: https://github.com/rfs85/redclouds
+              - icon: fontawesome/brands/python
+                link: https://pypi.org/project/redclouds
+            analytics:
+              provider: google
+              property: !ENV GOOGLE_ANALYTICS_KEY
+            consent:
+              title: Cookie consent
+              description: >-
+                We use cookies to recognize your repeated visits and preferences, as well
+                as to measure the effectiveness of our documentation and whether users
+                find what they're searching for. With your consent, you're helping us to
+                make our documentation better.
+
+          nav:
+            - Home: index.md
+            - Getting Started:
+              - Installation: getting-started/installation.md
+              - Configuration: getting-started/configuration.md
+              - Quick Start: getting-started/quickstart.md
+            - Use Cases:
+              - Overview: use-cases/index.md
+              - Security Auditing: use-cases/security-auditing.md
+              - Resource Discovery: use-cases/resource-discovery.md
+              - Compliance Checks: use-cases/compliance.md
+            - Features:
+              - Cloud Providers: features/cloud-providers.md
+              - Security Checks: features/security-checks.md
+              - Output Formats: features/output-formats.md
+            - Guides:
+              - AWS Security: guides/aws-security.md
+              - Azure Security: guides/azure-security.md
+              - GCP Security: guides/gcp-security.md
+            - Contributing: CONTRIBUTING.md
+            - Code of Conduct: CODE_OF_CONDUCT.md
+            - Changelog: ../CHANGELOG.md
+          EOF
+
+      - name: Create documentation structure
         run: |
+          mkdir -p docs/{getting-started,use-cases,features,guides}
           cp README.md docs/index.md
+          
+          # Create Getting Started docs
+          echo "# Installation Guide" > docs/getting-started/installation.md
+          echo "# Configuration Guide" > docs/getting-started/configuration.md
+          echo "# Quick Start Guide" > docs/getting-started/quickstart.md
+          
+          # Create Use Cases docs
+          cat > docs/use-cases/index.md << 'EOF'
+          # RedClouds Use Cases
+          
+          Discover how organizations leverage RedClouds for cloud security and resource management.
+          
+          ## Common Use Cases
+          
+          - Security Auditing and Compliance
+          - Resource Discovery and Inventory
+          - Cost Optimization
+          - Security Incident Response
+          - DevSecOps Integration
+          EOF
+          
+          cat > docs/use-cases/security-auditing.md << 'EOF'
+          # Security Auditing Use Cases
+          
+          Learn how to use RedClouds for comprehensive security auditing across cloud providers.
+          
+          ## Enterprise Security Assessment
+          
+          Example of running a full security audit:
+          ```bash
+          python main.py audit --provider all --format html --output enterprise-audit.html
+          ```
+          
+          ## Compliance Validation
+          
+          Running specific compliance checks:
+          ```bash
+          python main.py audit --provider aws --service iam --service storage
+          ```
+          EOF
+          
+          cat > docs/use-cases/resource-discovery.md << 'EOF'
+          # Resource Discovery Use Cases
+          
+          Learn how to discover and inventory cloud resources using RedClouds.
+          
+          ## Domain-based Discovery
+          
+          Find all resources associated with a domain:
+          ```bash
+          python main.py search --provider all --domain example.com
+          ```
+          
+          ## Company Asset Inventory
+          
+          Search for company resources across clouds:
+          ```bash
+          python main.py search --provider all --company "Example Corp"
+          ```
+          EOF
+          
+          cat > docs/use-cases/compliance.md << 'EOF'
+          # Compliance Use Cases
+          
+          Learn how to use RedClouds for compliance monitoring and reporting.
+          
+          ## CIS Benchmark Compliance
+          
+          Running CIS compliance checks:
+          ```bash
+          python main.py audit --provider aws --compliance cis
+          ```
+          
+          ## Custom Compliance Frameworks
+          
+          Creating and running custom compliance checks:
+          ```bash
+          python main.py audit --provider all --custom-rules my-compliance.yaml
+          ```
+          EOF
 
       - name: Build documentation
         run: mkdocs build
