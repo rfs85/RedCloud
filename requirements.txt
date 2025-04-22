@@ -1,17 +1,17 @@
 # Cloud Provider SDKs
-boto3>=1.26.0
-azure-identity>=1.12.0
-azure-mgmt-resource>=21.1.0
-azure-mgmt-compute>=29.1.0
-azure-mgmt-network>=21.0.1
-azure-mgmt-storage>=20.1.0
-azure-mgmt-monitor>=5.0.1
+boto3>=1.37.38
+azure-identity>=1.21.0
+azure-mgmt-resource>=23.3.0
+azure-mgmt-compute>=34.1.0
+azure-mgmt-network>=28.1.0
+azure-mgmt-storage>=22.2.0
+azure-mgmt-monitor>=6.0.2
 azure-mgmt-sql>=3.0.1
 azure-mgmt-subscription>=3.1.1
-google-cloud-storage>=2.7.0
-google-cloud-compute>=1.11.0
+google-cloud-storage>=3.1.0
+google-cloud-compute>=1.30.0
 google-cloud-iam>=2.11.0
-google-cloud-monitoring>=2.14.1
+google-cloud-monitoring>=2.27.1
 google-cloud-core>=2.3.2
 google-api-python-client>=2.0.0
 google-cloud-iam-v1>=0.1.0
@@ -20,16 +20,37 @@ google-cloud-iam-v1>=0.1.0
 pymongo>=4.6.0
 
 # CLI and Configuration
-click>=8.1.3
-python-dotenv>=1.0.0
-pyyaml>=6.0.1
+click>=8.1.8
+python-dotenv>=1.1.0
+PyYAML>=6.0.2
 
 # Reporting
-pandas>=2.0.0
+pandas>=2.2.3
 tabulate>=0.9.0
-rich>=13.3.5
+rich>=14.0.0
+
+# Container and Kubernetes
+kubernetes>=29.0.0  # Python client for Kubernetes
+docker>=7.0.0  # Docker SDK for Python
+
+# AI/ML Security
+mlflow>=2.10.0  # ML lifecycle management
+scikit-learn>=1.4.0  # Machine learning utilities
+tensorflow-privacy>=0.9.0  # Privacy-preserving machine learning
+adversarial-robustness-toolbox>=1.17.0  # AI security testing
+
+# Zero Trust
+cryptography>=44.0.2  # Cryptographic operations
+jwt>=2.10.1  # JSON Web Tokens
+requests>=2.32.3  # HTTP library
+oauthlib>=3.2.2  # OAuth library
+
+# FinOps
+prometheus-client>=0.20.0  # Metrics collection
+grafana-api>=2.1.0  # Grafana integration
+opencost>=0.5.0  # Cloud cost monitoring
 
 # Utilities
-requests>=2.28.2
-typing-extensions>=4.5.0
-python-dateutil>=2.8.2 
+numpy>=2.2.5
+typing-extensions>=4.13.2
+python-dateutil>=2.9.0 
